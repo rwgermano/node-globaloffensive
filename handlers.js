@@ -248,6 +248,23 @@ GlobalOffensive.prototype._processSOEconItem = function(item) {
 	if (stickers.length > 0) {
 		item.stickers = stickers;
 	}
+	
+	// charms
+	let charmIdBytes = getAttributeValueBytes(299);
+	let charmOffsetXBytes = getAttributeValueBytes(300);
+	let charmOffsetYBytes = getAttributeValueBytes(301);
+	let charmOffsetZBytes = getAttributeValueBytes(302);
+	let charmPatternBytes = getAttributeValueBytes(306);
+
+	if (charmIdBytes && charmOffsetXBytes && charmOffsetYBytes && charmOffsetZBytes && charmPatternBytes) {
+		item.charm = {
+			charm_id: charmIdBytes.readUInt32LE(0),
+			offset_x: charmOffsetXBytes.readFloatLE(0),
+			offset_y: charmOffsetYBytes.readFloatLE(0),
+			offset_z: charmOffsetZBytes.readFloatLE(0),
+			pattern: charmPatternBytes.readUInt32LE(0),
+		};
+	}
 
 	// def_index-specific attribute parsing
 	switch (item.def_index) {
